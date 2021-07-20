@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  gatsby:
+    build:
+      context: ./docker/nodejs
+      dockerfile: Dockerfile
+#    entrypoint: gatsby
+    environment:
+      - VIRTUAL_HOST=${VIRTUAL_HOST}
+      - LETSENCRYPT_HOST=${VIRTUAL_HOST}
+    volumes:
+      - ./src:/app
+
+  develop:
+    build:
+      context: ./docker/nodejs
+      dockerfile: Dockerfile
+#    command: gatsby develop -H 0.0.0.0
+    environment:
+      - VIRTUAL_HOST=${VIRTUAL_HOST}
+      - LETSENCRYPT_HOST=${VIRTUAL_HOST}
+    expose:
+    - 80
+    volumes:
+      - ./src:/app
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
